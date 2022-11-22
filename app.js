@@ -11,7 +11,16 @@ const courseOfValuteRight = document.querySelector(".valute-info-block-right");
 const allBtnsInLeftSide = document.querySelectorAll(".leftBtn");
 const allBtnsInRightSide = document.querySelectorAll(".rightBtn");
 const leftSideBtns = document.querySelector(".values-rightside-content");
+const menuIcon = document.querySelector(".menu-icon");
+const menuItems = document.querySelector(".menuForMobile");
+const titleText = document.querySelector(".title")
+let openMenu = false;
+menuIcon.addEventListener('click', () => {
+    if(!openMenu){menuItems.style.display = "block"; menuItems.style.marginTop = "1vw"; openMenu = true; titleText.style.marginTop = "20vw"}
+    else{menuItems.style.display = "none"; openMenu = false; titleText.style.marginTop = "10vw"}    
+});
 coloring();
+
 fetch(`https://api.exchangerate.host/latest?base=${leftValue}&symbols=${rightValue}`)
 .then(response => {return response.json()})
 .then(data => {
@@ -19,6 +28,9 @@ fetch(`https://api.exchangerate.host/latest?base=${leftValue}&symbols=${rightVal
     ratioFromRightToLeft = 1 / ratioFromLeftToRight;
     courseOfValuteLeft.value = `1 ${leftValue} = ${parseFloat(ratioFromLeftToRight.toFixed(4))} ${rightValue}`;
     courseOfValuteRight.value = `1 ${rightValue} = ${parseFloat(ratioFromRightToLeft.toFixed(4))} ${leftValue}`;
+})
+.catch(error => {
+    alert("Ошибка: " + error + "\nВозникли ошибки пожалуста повторите попытку через 5 минут.")
 });
 function coloring(){
     allBtnsInLeftSide.forEach(item => {
@@ -53,56 +65,6 @@ document.addEventListener('click', (event) => {
         rightValue = event.target.innerHTML;
     }
     coloring();
-    amountInLeft.addEventListener('click', () => {
-        let punctir = true;
-        let array = "";
-        res = amountInLeft.value;
-        console.log(res);
-        res = res.split("");  //item.charCodeAt()
-        res.forEach(item => {
-            if((item.charCodeAt() >= 48 && item.charCodeAt() <= 57) || (item.charCodeAt() == 44 || item.charCodeAt() == 46)){
-                if(item.charCodeAt() == 44 || item.charCodeAt() == 46){
-                    if(punctir){
-                        array += ".";
-                        punctir = false;
-                    }
-                }
-                else{
-                    array += item;
-                    console.log("true");
-                    console.log(array);
-                }
-                fixedAmountL = parseFloat(array);
-                amountInLeft.value = fixedAmountL;
-                amountInRight.value = parseFloat((amountInLeft.value * ratioFromLeftToRight).toFixed(4));
-            }
-        });
-    });
-    amountInRight.addEventListener('click', () => {
-        let punctir = true;
-        let array = "";
-        res = amountInRight.value;
-        console.log(res);
-        res = res.split("");  //item.charCodeAt()
-        res.forEach(item => {
-            if((item.charCodeAt() >= 48 && item.charCodeAt() <= 57) || (item.charCodeAt() == 44 || item.charCodeAt() == 46)){
-                if(item.charCodeAt() == 44 || item.charCodeAt() == 46){
-                    if(punctir){
-                        array += ".";
-                        punctir = false;
-                    }
-                }
-                else{
-                    array += item;
-                    console.log("true");
-                    console.log(array);
-                }
-                fixedAmountR = parseFloat(array);
-                amountInRight.value = fixedAmountR;
-                amountInLeft.value = parseFloat((amountInRight.value * ratioFromRightToLeft).toFixed(4));
-            }
-        });
-    });
     fetch(`https://api.exchangerate.host/latest?base=${leftValue}&symbols=${rightValue}`)
     .then(response => {return response.json()})
     .then(data => {
@@ -110,7 +72,71 @@ document.addEventListener('click', (event) => {
         ratioFromRightToLeft = 1 / ratioFromLeftToRight;
         courseOfValuteLeft.value = `1 ${leftValue} = ${parseFloat(ratioFromLeftToRight.toFixed(4))} ${rightValue}`;
         courseOfValuteRight.value = `1 ${rightValue} = ${parseFloat(ratioFromRightToLeft.toFixed(4))} ${leftValue}`;
+        if(amountInLeft.value.length == 0){amountInRight.value = "";}
+        else{amountInRight.value = numberWithSpaces(parseFloat((fixedAmountL * ratioFromLeftToRight).toFixed(4)));}
+    })
+    .catch(error => {
+        alert("Ошибка: " + error + "\nВозникли ошибки пожалуста повторите попытку через 5 минут.")
     });
 });
-
-///5,6,7,8,
+amountInLeft.addEventListener('keyup', (event) => {
+    if(event.key.charCodeAt() != 65){
+    if(amountInLeft.value.length == 0){amountInRight.value = "";}
+    let pointExist = false;
+    let array = "";
+    res = amountInLeft.value;
+    res = res.split("");  //item.charCodeAt()
+    res.forEach(item => {
+        if((item.charCodeAt() >= 48 && item.charCodeAt() <= 57) || (item.charCodeAt() == 44 || item.charCodeAt() == 46)){
+            if(item.charCodeAt() == 44 || item.charCodeAt() == 46){
+                if(!pointExist){
+                    if(amountInLeft.value.length == 1){amountInLeft.value = "";}
+                    array += ".";
+                    pointExist = true;
+                }
+            }
+            else{
+                array += item;
+            }
+            fixedAmountL = parseFloat(array);
+            amountInLeft.value = parseFloat(numberWithSpaces(array));
+            amountInRight.value = numberWithSpaces(parseFloat((fixedAmountL * ratioFromLeftToRight).toFixed(4)));
+        }
+        else if(res.length == 1){amountInLeft.value = "";}
+    });
+   }
+    
+});
+amountInRight.addEventListener('keyup', (event) => {
+    if(event.key.charCodeAt() != 65){
+    if(amountInRight.value.length == 0){amountInLeft.value = "";}
+    let pointExist = false;
+    let array = "";
+    res = amountInRight.value;
+    res = res.split("");
+    res.forEach(item => {
+        if((item.charCodeAt() >= 48 && item.charCodeAt() <= 57) || (item.charCodeAt() == 44 || item.charCodeAt() == 46)){
+            if(item.charCodeAt() == 44 || item.charCodeAt() == 46){
+                if(!pointExist){
+                    if(amountInRight.value.length == 0){amountInLeft.value = "";}
+                    array += ".";
+                    pointExist = true;
+                }
+            }
+            else{
+                array += item;
+            }
+            fixedAmountR = parseFloat(array);
+            amountInRight.value = parseFloat(numberWithSpaces(array));
+            amountInLeft.value = numberWithSpaces(parseFloat((fixedAmountR * ratioFromRightToLeft).toFixed(4)));
+        }
+        else if(amountInRight.value.length == 1){amountInRight.value = "";}
+        else {event.preventDefault();}
+    });
+}
+});
+function numberWithSpaces(x) {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return parts.join(".");
+}

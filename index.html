@@ -8,7 +8,19 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <img src="Photos\logo.svg" alt="logo">
+            <div class="menu-icon">
+                <img class="menuIconSvg" src="Photos\menu.svg" alt="menu-icon">
+                <div class="menuForMobile">
+                    <button style="color: black">БАНК</button>
+                    <button>БИЗНЕС</button>
+                    <button>ИНВЕСТИЦИИ</button>
+                    <button>СТРАХОВАНИЕ</button>
+                    <button>МОБАЙЛ</button>
+                    <button>ПУТЕШЕСТВИЯ</button>
+                    <button>РАЗВЛЕЧЕНИЯ</button>
+                </div>
+            </div>
+            <img class="logoSvg" src="Photos\logo.svg" alt="logo">
             <div class="menu">
                 <button style="color: black">БАНК</button>
                 <button>БИЗНЕС</button>
@@ -32,7 +44,7 @@
             --><button class="leftBtn" id="btn4">GBP</button>
             </div>
             <div class="info-block">
-                <input class="input-block-left" type="text">
+                <input class="input-block-left" type="text" onkeyup="this.value = this.value.replace(/[^0-9,.]/g, '').replace(/^00+/, '0');">
                 <input class="valute-info-block-left" type="text" readonly>
             </div>
         </div>
@@ -45,7 +57,7 @@
                 --><button class="rightBtn" id="btn8">GBP</button>
             </div>
             <div class="info-block">
-                <input class="input-block-right" type="text">
+                <input class="input-block-right" type="text" onkeyup="this.value = this.value.replace(/[^\d]/g,'').replace(/^00+/, '0');">
                 <input class="valute-info-block-right" type="text" readonly>
             </div>
         </div>

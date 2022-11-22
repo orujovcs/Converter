@@ -11,6 +11,12 @@ body{
     padding-left: 10vw;
     padding-right: 10vw;
 }
+.menuForMobile{
+    display: none;
+}
+.menu-icon{
+    display: none;
+}
 .menu button{
     margin-top: 10px;
     margin-left: 15px;
@@ -94,4 +100,55 @@ body{
 input{
     border: 0;
     outline: 0;
+}
+@media screen and (max-width: 1100px) and (min-width: 320px){
+    .header{
+        height: 8vw;
+    }
+    .menu-icon{
+        display: block;
+        width: 5vw;
+    }
+    .logoSvg{
+        height: 20%;
+        width: 20vw;
+    }
+    .sign-in button{
+        height: 5vw;
+    }
+    .menuIconSvg{
+        width: 100%;
+    }
+
+    .menuForMobile button{
+        margin-top: 10px;
+        /* margin-left: 15px; */
+        font-weight: 550;
+        color: gray;
+        background-color: transparent;
+        border: none;
+    }
+    .menu{
+        display: none;
+    }
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+    .content{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .left-content-converter, .right-content-converter{
+        margin-left: 10vw;
+    }
+    .right-content-converter{
+        margin-top: 5vw;
+    }
+    .title{
+        display: flex;
+        justify-content: left;
+        margin-left: 25vw;
+    }
 }
