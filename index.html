@@ -57,7 +57,7 @@
                 --><button class="rightBtn" id="btn8">GBP</button>
             </div>
             <div class="info-block">
-                <input class="input-block-right" type="text" onkeyup="this.value = this.value.replace(/[^\d]/g,'').replace(/^00+/, '0');">
+                <input class="input-block-right" type="text" onkeyup="this.value = this.value.replace(/[^0-9,.]/g, '').replace(/^00+/, '0');">
                 <input class="valute-info-block-right" type="text" readonly>
             </div>
         </div>

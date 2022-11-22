@@ -72,8 +72,18 @@ document.addEventListener('click', (event) => {
         ratioFromRightToLeft = 1 / ratioFromLeftToRight;
         courseOfValuteLeft.value = `1 ${leftValue} = ${parseFloat(ratioFromLeftToRight.toFixed(4))} ${rightValue}`;
         courseOfValuteRight.value = `1 ${rightValue} = ${parseFloat(ratioFromRightToLeft.toFixed(4))} ${leftValue}`;
-        if(amountInLeft.value.length == 0){amountInRight.value = "";}
-        else{amountInRight.value = numberWithSpaces(parseFloat((fixedAmountL * ratioFromLeftToRight).toFixed(4)));}
+        if(event.target.className == "leftBtn"){
+            console.log(event.target.className);
+            console.log(fixedAmountL);
+            if(amountInLeft.value.length == 0){amountInRight.value = "";}
+            else{amountInRight.value = numberWithSpaces(parseFloat((fixedAmountL * ratioFromLeftToRight).toFixed(4)));}
+        }
+        else if(event.target.className == "rightBtn"){
+            console.log(event.target.className);
+            console.log(fixedAmountR);
+            if(amountInRight.value.length == 0){amountInLeft.value = "";}
+            else{amountInLeft.value = numberWithSpaces(parseFloat((fixedAmountR * ratioFromRightToLeft).toFixed(4)));}
+        }
     })
     .catch(error => {
         alert("Ошибка: " + error + "\nВозникли ошибки пожалуста повторите попытку через 5 минут.")
@@ -85,7 +95,7 @@ amountInLeft.addEventListener('keyup', (event) => {
     let pointExist = false;
     let array = "";
     res = amountInLeft.value;
-    res = res.split("");  //item.charCodeAt()
+    res = res.split("");
     res.forEach(item => {
         if((item.charCodeAt() >= 48 && item.charCodeAt() <= 57) || (item.charCodeAt() == 44 || item.charCodeAt() == 46)){
             if(item.charCodeAt() == 44 || item.charCodeAt() == 46){
@@ -99,8 +109,9 @@ amountInLeft.addEventListener('keyup', (event) => {
                 array += item;
             }
             fixedAmountL = parseFloat(array);
-            amountInLeft.value = parseFloat(numberWithSpaces(array));
+            amountInLeft.value = numberWithSpaces(array);
             amountInRight.value = numberWithSpaces(parseFloat((fixedAmountL * ratioFromLeftToRight).toFixed(4)));
+            if(amountInLeft.value[0] == 0 && amountInLeft.value.split(".")[0].length == 2){amountInLeft.value = amountInLeft.value.split("").pop().toString()}
         }
         else if(res.length == 1){amountInLeft.value = "";}
     });
@@ -109,29 +120,29 @@ amountInLeft.addEventListener('keyup', (event) => {
 });
 amountInRight.addEventListener('keyup', (event) => {
     if(event.key.charCodeAt() != 65){
-    if(amountInRight.value.length == 0){amountInLeft.value = "";}
-    let pointExist = false;
-    let array = "";
-    res = amountInRight.value;
-    res = res.split("");
-    res.forEach(item => {
-        if((item.charCodeAt() >= 48 && item.charCodeAt() <= 57) || (item.charCodeAt() == 44 || item.charCodeAt() == 46)){
-            if(item.charCodeAt() == 44 || item.charCodeAt() == 46){
-                if(!pointExist){
-                    if(amountInRight.value.length == 0){amountInLeft.value = "";}
-                    array += ".";
-                    pointExist = true;
+        if(amountInRight.value.length == 0){amountInLeft.value = "";}
+        let pointExist = false;
+        let array = "";
+        res = amountInRight.value;
+        res = res.split("");
+        res.forEach(item => {
+            if((item.charCodeAt() >= 48 && item.charCodeAt() <= 57) || (item.charCodeAt() == 44 || item.charCodeAt() == 46)){
+                if(item.charCodeAt() == 44 || item.charCodeAt() == 46){
+                    if(!pointExist){
+                        if(amountInRight.value.length == 0){amountInLeft.value = "";}
+                        array += ".";
+                        pointExist = true;
+                    }
                 }
-            }
-            else{
-                array += item;
-            }
-            fixedAmountR = parseFloat(array);
-            amountInRight.value = parseFloat(numberWithSpaces(array));
-            amountInLeft.value = numberWithSpaces(parseFloat((fixedAmountR * ratioFromRightToLeft).toFixed(4)));
+                else{
+                    array += item;
+                }
+                fixedAmountR = parseFloat(array);
+                amountInRight.value = numberWithSpaces(array);
+                amountInLeft.value = numberWithSpaces(parseFloat((fixedAmountR * ratioFromRightToLeft).toFixed(4)));
+                if(amountInRight.value[0] == 0 && amountInRight.value.split(".")[0].length == 2){amountInRight.value = amountInRight.value.split("").pop().toString()}
         }
         else if(amountInRight.value.length == 1){amountInRight.value = "";}
-        else {event.preventDefault();}
     });
 }
 });
